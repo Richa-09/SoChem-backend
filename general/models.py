@@ -6,7 +6,9 @@ class ForumPost(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     heading = models.CharField(max_length=100)
     body = models.TextField()
-    date_time = models.DateTimeField(auto_now_add=True)
+    date = models.DateField(auto_now_add=True)
+    time = models.TimeField(auto_now_add=True)
+    likes = models.IntegerField(default=0)
 
 
 class ForumComment(models.Model):
