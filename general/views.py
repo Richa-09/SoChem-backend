@@ -10,8 +10,8 @@ from .serializers import ForumPostSerializer, UserSerializer, ForumCommentSerial
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    authentication_classes = (TokenAuthentication, )
     permission_classes = (AllowAny, )
+    print(UserSerializer)
 
 
 class ForumPostViewSet(viewsets.ModelViewSet):

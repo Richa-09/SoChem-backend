@@ -6,5 +6,5 @@ from general import urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', obtain_auth_token),
-    path('', include(urls)),
+    path('api/', include(urls)),
 ]
