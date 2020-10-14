@@ -13,6 +13,7 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = (AllowAny, )
 
+
 class ForumPostViewSet(viewsets.ModelViewSet):
     queryset = ForumPost.objects.all()
     serializer_class = ForumPostSerializer
