@@ -25,6 +25,7 @@ class ForumPostViewSet(viewsets.ModelViewSet):
         forum_post.heading = request.data['heading']
         forum_post.body = request.data['body']
         forum_post.author = request.user
+        forum_post.author_name = request.user.first_name + ' ' + request.user.last_name
         forum_post.save()
         serializer = ForumPostSerializer(forum_post, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -47,6 +48,7 @@ class ForumCommentViewSet(viewsets.ModelViewSet):
         par_post = ForumPost.objects.all().filter(id=request.data['post_id'])
         forum_comment.parent_post = par_post[0]
         forum_comment.author = request.user
+        forum_comment.author_name = request.user.first_name + ' ' + request.user.last_name
         forum_comment.save()
         serializer = ForumCommentSerializer(forum_comment, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
