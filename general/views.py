@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import ForumPost, ForumComment, ForumReply
-from .serializers import ForumPostSerializer, UserSerializer, ForumCommentSerializer, ForumReplySerializer
+from .models import ForumPost, ForumComment, ForumReply, Events
+from .serializers import ForumPostSerializer, UserSerializer, ForumCommentSerializer, ForumReplySerializer, EventsSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -90,3 +90,10 @@ class UserFromTokenViewSet(viewsets.ModelViewSet):
         user = Token.objects.get(key=request.data['token']).user
         serializer = UserSerializer(user, many=False)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class EventsViewSet(viewsets.ModelViewSet):
+    queryset = Events.objects.all()
+    serializer_class = EventsSerializer
+    authentication_classes = (TokenAuthentication, )
+    permission_classes = (IsAuthenticated, )

@@ -24,3 +24,16 @@ class ForumReply(models.Model):
     reply = models.CharField(max_length=200)
     author = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     date = models.DateTimeField(auto_now_add=True)
+
+
+def upload_path(instance, filename):
+    return '/'.join(['covers', str(instance.title), filename])
+
+
+class Events(models.Model):
+    title = models.CharField(max_length=150, blank=False)
+    description = models.TextField()
+    date = models.DateField()
+    venue = models.CharField(max_length=50)
+    cover1 = models.ImageField(blank=True, null=True, upload_to=upload_path)
+    cover2  = models.ImageField(blank=True, null=True, upload_to=upload_path)

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
-from .models import ForumPost, ForumComment, ForumReply
+from .models import ForumPost, ForumComment, ForumReply, Events
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -32,3 +32,9 @@ class ForumReplySerializer(serializers.ModelSerializer):
     class Meta:
         model = ForumReply
         fields = '__all__'
+
+
+class EventsSerializer(serializers.ModelSerializer):
+     class Meta:
+         model = Events
+         fields = '__all__'
