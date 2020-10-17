@@ -36,4 +36,9 @@ class Events(models.Model):
     date = models.DateField()
     venue = models.CharField(max_length=50)
     cover1 = models.ImageField(blank=True, null=True, upload_to=upload_path)
-    cover2  = models.ImageField(blank=True, null=True, upload_to=upload_path)
+    cover2 = models.ImageField(blank=True, null=True, upload_to=upload_path)
+
+class UserExtension(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.CharField(max_length=100)
+    batch = models.CharField(max_length=10)
