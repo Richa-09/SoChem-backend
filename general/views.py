@@ -4,8 +4,9 @@ from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import ForumPost, ForumComment, ForumReply, Events
-from .serializers import ForumPostSerializer, UserSerializer, ForumCommentSerializer, ForumReplySerializer, EventsSerializer
+from django.http import HttpResponse
+from .models import ForumPost, ForumComment, ForumReply, Events, UserExtension
+from .serializers import ForumPostSerializer, UserSerializer, ForumCommentSerializer, ForumReplySerializer, EventsSerializer, UserExtensionSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -31,9 +32,14 @@ class ForumPostViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def list(self, request, *args, **kwargs):
-        forum_post = ForumPost.objects.all().order_by('-id')
-        serializer = ForumPostSerializer(forum_post, many = True)
-        return Response(serializer.data, status = status.HTTP_200_OK)
+        if 'id' in request.GET:
+            forum_post = ForumPost.objects.all().filter(author=request.GET['id'])
+            serializer = ForumPostSerializer(forum_post, many = True)
+            return Response(serializer.data, status = status.HTTP_200_OK)
+        else:
+            forum_post = ForumPost.objects.all().order_by('-id')
+            serializer = ForumPostSerializer(forum_post, many = True)
+            return Response(serializer.data, status = status.HTTP_200_OK)
 
 
 class ForumCommentViewSet(viewsets.ModelViewSet):
@@ -54,9 +60,15 @@ class ForumCommentViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def list(self, request, *args, **kwargs):
-        forum_comment = ForumComment.objects.all().filter(parent_post = request.GET['post_id']).order_by('-id')
-        serializer = ForumCommentSerializer(forum_comment, many = True)
-        return Response(serializer.data, status = status.HTTP_200_OK)
+        if 'post_id' in request.GET:
+            forum_comment = ForumComment.objects.all().filter(parent_post = request.GET['post_id']).order_by('-id')
+            serializer = ForumCommentSerializer(forum_comment, many = True)
+            return Response(serializer.data, status = status.HTTP_200_OK)
+        else:
+            forum_comment = ForumComment.objects.all().filter(author = request.GET['user_id']).order_by('-id')
+            serializer = ForumCommentSerializer(forum_comment, many = True)
+            return Response(serializer.data, status = status.HTTP_200_OK)
+
 
 
 class ForumReplyViewSet(viewsets.ModelViewSet):
@@ -97,3 +109,25 @@ class EventsViewSet(viewsets.ModelViewSet):
     serializer_class = EventsSerializer
     authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAuthenticated, )
+
+class UserExtensionViewSet(viewsets.ModelViewSet):
+    queryset = UserExtension.objects.all()
+    serializer_class = UserExtensionSerializer
+    authentication_classes = (TokenAuthentication, )
+    permission_classes = (IsAuthenticated, )
+
+    def list(self, request, *args, **kwargs):
+        user_details = UserExtension.objects.all().filter(user = request.GET['id'])
+        serializer = UserExtensionSerializer(user_details, many = True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+
+def commentCount(request):
+
+    all_comment = ForumComment.objects.all()
+    user = User.objects.get(id = request.GET['user_id']).username
+    count = 0
+    for comment in all_comment:
+        parent_post = comment.parent_post
+        if str(parent_post.author) == str(user):
+            count = count + 1
+    return HttpResponse({count}, status=status.HTTP_200_OK)

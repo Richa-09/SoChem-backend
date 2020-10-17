@@ -30,10 +30,19 @@ def upload_path(instance, filename):
     return '/'.join(['covers', str(instance.title), filename])
 
 
+def upload_profile_photo(instance, filename):
+    return '/'.join(['profile-photo', str(instance.user), str(instance.user)+'.jpeg'])
+
 class Events(models.Model):
     title = models.CharField(max_length=150, blank=False)
     description = models.TextField()
     date = models.DateField()
     venue = models.CharField(max_length=50)
     cover1 = models.ImageField(blank=True, null=True, upload_to=upload_path)
-    cover2  = models.ImageField(blank=True, null=True, upload_to=upload_path)
+    cover2 = models.ImageField(blank=True, null=True, upload_to=upload_path)
+
+class UserExtension(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.CharField(max_length=100)
+    batch = models.CharField(max_length=10)
+    profile_photo = models.ImageField(blank=True, null=True, upload_to=upload_profile_photo)
