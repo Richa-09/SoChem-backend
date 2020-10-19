@@ -130,5 +130,4 @@ def commentCount(request):
         parent_post = comment.parent_post
         if str(parent_post.author) == str(user):
             count = count + 1
-    print((count))
     return HttpResponse({count}, status=status.HTTP_200_OK)
