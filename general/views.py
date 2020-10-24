@@ -105,7 +105,7 @@ class UserFromTokenViewSet(viewsets.ModelViewSet):
 
 
 class EventsViewSet(viewsets.ModelViewSet):
-    queryset = Events.objects.all()
+    queryset = Events.objects.all().order_by('-id')
     serializer_class = EventsSerializer
     authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAuthenticated, )
