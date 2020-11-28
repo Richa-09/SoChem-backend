@@ -1,5 +1,7 @@
 from rest_framework import viewsets, status
 from django.contrib.auth.models import User
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
@@ -12,7 +14,7 @@ from .serializers import ForumPostSerializer, UserSerializer, ForumCommentSerial
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (AllowAny, )
+    permission_classes = (IsAuthenticated,)
 
 
 class ForumPostViewSet(viewsets.ModelViewSet):
@@ -121,11 +123,15 @@ class UserExtensionViewSet(viewsets.ModelViewSet):
         serializer = UserExtensionSerializer(user_details, many = True)
         return Response(serializer.data, status = status.HTTP_200_OK)
 
-def commentCount(request):
 
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def commentCount(request):
     all_comment = ForumComment.objects.all()
-    user = User.objects.get(id = request.GET['user_id']).username
+    user = request.user
     count = 0
+    print(user)
     for comment in all_comment:
         parent_post = comment.parent_post
         if str(parent_post.author) == str(user):
