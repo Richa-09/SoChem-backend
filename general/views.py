@@ -7,6 +7,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from django.http import HttpResponse
+from django.db.models import Count
 from .models import ForumPost, ForumComment, ForumReply, Events, UserExtension
 from .serializers import ForumPostSerializer, UserSerializer, ForumCommentSerializer, ForumReplySerializer, EventsSerializer, UserExtensionSerializer
 
@@ -14,9 +15,11 @@ from .serializers import ForumPostSerializer, UserSerializer, ForumCommentSerial
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated,)
-
-
+    permission_classes = (AllowAny, )
+    def list(self, request, *args, **kwargs):
+            user = User.objects.all().order_by('-userextension__batch', 'first_name')
+            serializer = UserSerializer(user, many = True)
+            return Response(serializer.data, status = status.HTTP_200_OK)
 class ForumPostViewSet(viewsets.ModelViewSet):
     queryset = ForumPost.objects.all()
     serializer_class = ForumPostSerializer
@@ -122,6 +125,7 @@ class UserExtensionViewSet(viewsets.ModelViewSet):
         user_details = UserExtension.objects.all().filter(user = request.GET['id'])
         serializer = UserExtensionSerializer(user_details, many = True)
         return Response(serializer.data, status = status.HTTP_200_OK)
+
 
 
 @api_view(['GET'])
