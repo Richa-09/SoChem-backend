@@ -4,6 +4,7 @@ from .views import ForumPostViewSet, ForumCommentViewSet, ForumReplyViewSet, Use
 from django.conf.urls.static import static
 from django.conf import settings
 from .views import commentCount
+from .authorization import auth
 router = routers.DefaultRouter()
 
 router.register('forum-post', ForumPostViewSet)
@@ -16,6 +17,7 @@ router.register('user-extension', UserExtensionViewSet)
 
 urlpatterns = [
    path('total-comments', commentCount),
+   path('logup', auth),
    path('', include(router.urls)),
 ]
 

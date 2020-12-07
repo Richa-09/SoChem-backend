@@ -45,4 +45,4 @@ class UserExtension(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.CharField(max_length=100)
     batch = models.CharField(max_length=10)
-    profile_photo = models.ImageField(blank=True, null=True, upload_to=upload_profile_photo)
+    profile_photo = models.TextField()
