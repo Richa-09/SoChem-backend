@@ -1,3 +1,5 @@
+import MySQLdb
+import json
 from rest_framework import viewsets, status
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -146,3 +148,27 @@ def commentCount(request):
     return HttpResponse({count}, status=status.HTTP_200_OK)
 
 
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def get_family(request):
+    data = []
+    family = []
+    db = MySQLdb.connect(user='root',
+                         db='eboard',
+                         passwd='m191007005',
+                         host='localhost')
+    cursor = db.cursor()
+    sql = "SELECT batch, GROUP_CONCAT(user_id separator ',') FROM general_userextension GROUP BY batch;"
+    cursor.execute(sql)
+    data = cursor.fetchall()
+    db.close()
+    print(data)
+    for x in data:
+        obj = {}
+        obj["batch"] = x[0]
+        my_list = x[1].split(",")
+        final = json.dumps(my_list)
+        obj["user_id"] = final
+        family.append(obj)
+    return Response(family, status=status.HTTP_200_OK)
