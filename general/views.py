@@ -153,16 +153,15 @@ def commentCount(request):
 def get_family(request):
     data = []
     family = []
-    db = MySQLdb.connect(user='root',
-                         db='eboard',
+    db = MySQLdb.connect(user='user87',
+                         db='eboard_db',
                          passwd='m191007005',
                          host='localhost')
     cursor = db.cursor()
-    sql = "SELECT batch, GROUP_CONCAT(user_id separator ',') FROM general_userextension GROUP BY batch;"
+    sql = "SELECT batch, group_concat(user_id ORDER BY auth_user.first_name, auth_user.last_name separator ',') FROM general_userextension, auth_user WHERE auth_user.id=general_userextension.user_id GROUP BY batch;"
     cursor.execute(sql)
     data = cursor.fetchall()
     db.close()
-    print(data)
     for x in data:
         obj = {}
         obj["batch"] = x[0]
