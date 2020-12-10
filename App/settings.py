@@ -34,7 +34,8 @@ MIDDLEWARE = [
 ]
 
 CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "https://sochem.org"
 ]
 
 ROOT_URLCONF = 'App.urls'
