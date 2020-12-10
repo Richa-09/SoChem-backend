@@ -3,7 +3,7 @@ from rest_framework import routers
 from .views import ForumPostViewSet, ForumCommentViewSet, ForumReplyViewSet, UserViewSet, UserFromTokenViewSet, EventsViewSet, UserExtensionViewSet
 from django.conf.urls.static import static
 from django.conf import settings
-from .views import commentCount
+from .views import commentCount, get_family
 from .authorization import auth
 router = routers.DefaultRouter()
 
@@ -17,6 +17,7 @@ router.register('user-extension', UserExtensionViewSet)
 
 urlpatterns = [
    path('total-comments', commentCount),
+   path('family', get_family),
    path('logup', auth),
    path('', include(router.urls)),
 ]
