@@ -7,7 +7,7 @@ SECRET_KEY = "m191007005"
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['13.71.44.98']
+ALLOWED_HOSTS = ['13.71.44.98', 'api.sochem.org']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
