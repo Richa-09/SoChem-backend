@@ -153,8 +153,8 @@ def commentCount(request):
 def get_family(request):
     data = []
     family = []
-    db = MySQLdb.connect(user='user87',
-                         db='eboard_db',
+    db = MySQLdb.connect(user='sochem',
+                         db='sochem_db',
                          passwd='m191007005',
                          host='localhost')
     cursor = db.cursor()
