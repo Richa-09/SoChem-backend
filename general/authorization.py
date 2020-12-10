@@ -28,7 +28,11 @@ def auth(request):
         usr.last_name = final.get('family_name', '')
         usr.save()
         user_profile = UserExtension.objects.get(user=usr)
-        user_profile.profile_photo = final.get('picture')
+        # This is done to improve the photo quality from s96 to s 400.
+        profile_photo_url = final.get('picture')
+        index_s96 = profile_photo_url.find('s96')
+        updated_profile_photo_url = profile_photo_url[:index_s96] + "s400" + profile_photo_url[index_s96+3:]
+        user_profile.profile_photo = updated_profile_photo_url
         user_profile.save()
         token_value, _ = Token.objects.get_or_create(user=usr)
         final_token = str(token_value)
@@ -55,8 +59,12 @@ def auth(request):
         user_profile.user = new
         user_profile.bio = ''
         user_profile.batch = parts[0].split('.')[-1]
-        print(final.get('picture'))
-        user_profile.profile_photo = final.get('picture')
+        # This is done to improve the photo quality from s96 to s 400.
+        profile_photo_url = final.get('picture')
+        index_s96 = profile_photo_url.find('s96')
+        updated_profile_photo_url = profile_photo_url[:index_s96] + "s400" + profile_photo_url[index_s96+3:]
+        user_profile.profile_photo = updated_profile_photo_url
+        user_profile.bio = "No Bio Added"
         user_profile.save()
         final_token = str(token_value)
         return Response({'token': final_token}, status=status.HTTP_200_OK)

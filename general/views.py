@@ -138,7 +138,6 @@ def commentCount(request):
     all_comment = ForumComment.objects.all()
     user = request.user
     count = 0
-    print(user.userextension)
     for comment in all_comment:
         parent_post = comment.parent_post
         if str(parent_post.author) == str(user):

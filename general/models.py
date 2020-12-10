@@ -6,8 +6,7 @@ class ForumPost(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     heading = models.CharField(max_length=500)
     body = models.TextField()
-    date = models.DateField(auto_now=True)
-    time = models.TimeField(auto_now=True)
+    date = models.DateTimeField(auto_now=True)
     author_name = models.TextField(max_length=50, default = "no_name")
 
 
@@ -43,6 +42,6 @@ class Events(models.Model):
 
 class UserExtension(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    bio = models.CharField(max_length=100)
+    bio = models.CharField(max_length=100, default="No Bio Added")
     batch = models.CharField(max_length=10)
     profile_photo = models.TextField()
