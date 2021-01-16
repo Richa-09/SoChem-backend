@@ -7,7 +7,7 @@ SECRET_KEY = "m191007005"
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['13.71.44.98', 'api.sochem.org']
+ALLOWED_HOSTS = ['13.71.44.98', 'api.sochem.org', "127.0.0.1"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -35,6 +35,7 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
+    "http://127.0.0.1:8000",
     "https://sochem.org",
     "https://www.sochem.org",
 ]

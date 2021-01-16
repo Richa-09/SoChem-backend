@@ -39,6 +39,8 @@ class Events(models.Model):
     venue = models.CharField(max_length=50)
     cover1 = models.ImageField(blank=True, null=True, upload_to=upload_path)
     cover2 = models.ImageField(blank=True, null=True, upload_to=upload_path)
+    file1 = models.FileField(upload_to='files', blank=True)
+    file2 = models.FileField(upload_to='files', blank=True)
 
 class UserExtension(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
