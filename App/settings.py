@@ -38,6 +38,7 @@ CORS_ORIGIN_WHITELIST = [
     "http://127.0.0.1:8000",
     "https://sochem.org",
     "https://www.sochem.org",
+    "https://www.sochem.in",
 ]
 
 ROOT_URLCONF = 'App.urls'
